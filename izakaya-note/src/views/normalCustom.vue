@@ -129,16 +129,17 @@
     margin-bottom: 6px;
     width: 100%;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: rgb(230, 110, 134);
   }
 
   .normal-custom-box {
-    width: calc(100% - 40px);
+    width: 100%;
     display: flex;
     align-content: center;
     flex-wrap: wrap;
+    margin-top: 8px;
   }
 
   .normal-custom-box .custom-info {
@@ -150,6 +151,7 @@
     flex-direction: column;
     justify-content: center;
   }
+
   .normal-custom-box .custom-info span {
     display: inline-block;
     width: 100%;

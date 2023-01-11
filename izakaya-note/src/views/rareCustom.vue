@@ -27,8 +27,9 @@
         <el-table-column label="菜名" prop="mealName"></el-table-column>
         <el-table-column label="价格" prop="price" sortable></el-table-column>
         <el-table-column label="tag数(喜爱tag - 厌恶tag)" prop="tagNum" sortable></el-table-column>
-        <el-table-column label="喜爱tag数" prop="like" sortable></el-table-column>
-        <el-table-column label="厌恶tag数" prop="hate" sortable></el-table-column>
+        <el-table-column label="喜爱tag" prop="like" sortable></el-table-column>
+        <el-table-column label="厌恶tag" prop="hate" sortable></el-table-column>
+        <el-table-column label="可额外添加tag" prop="extra" sortable></el-table-column>
         <el-table-column label="食材" prop="material"></el-table-column>
         <el-table-column label="厨具" prop="cookware"></el-table-column>
       </el-table>
@@ -45,7 +46,6 @@ import { meal_header, meal_results } from '@/assets/data/meal.js'
 
 // 选择的稀客
 const rareName = ref('')
-const rareDetail = reactive({})
 let tableData = reactive<typeof TableDataInterface_rareCostom[]>([])
 let customRareInfo = reactive<{[x: string]: string}>({})
 // 稀客 喜爱的料理 tag
@@ -73,14 +73,19 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
   tableData = []
   for (const meal of meal_results) {
     const mealTags: string[] = meal['正特性'].split('、')
-    const like: number = customRareInfo_like.reduce((init: number, cur:string) => (init += (mealTags.some((s: string) => s === cur)? 1: 0)), 0)
-    if(like > 0) {
-      const hate: number = customRareInfo_hate.reduce((init: number, cur:string) => (init += (mealTags.some((s: string) => s === cur)? 1: 0)), 0)
+    const likeNum: number = customRareInfo_like.reduce((init: number, cur:string) => (init += (mealTags.includes(cur)? 1: 0)), 0)
+    if(likeNum > 0) {
+      const hateNum: number = customRareInfo_hate.reduce((init: number, cur:string) => (init += (mealTags.includes(cur) ? 1: 0)), 0)
+      // 可额外添加的喜爱的tag
+      let extra = reactive<string[]>([])
+      extra = customRareInfo_like.filter(f => (!mealTags.includes(f) && !(meal['反特性']?.split('、')??[]).includes(f)))
+
       let tableDataItem = reactive<typeof TableDataInterface_rareCostom>({
         mealName: meal['名称'],
-        tagNum: like - hate,
-        like: like,
-        hate: hate,
+        tagNum: likeNum - hateNum,
+        like: mealTags.filter(f => customRareInfo_like.includes(f)).join('、'),
+        hate: mealTags.filter(f => customRareInfo_hate.includes(f)).join('、'),
+        extra: extra.join('、'),
         material: meal['食材'],
         cookware: meal['厨具'],
         price: meal['价格/円'],
@@ -88,6 +93,7 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
       tableData.push(tableDataItem)
     }
   }
+  tableData.sort((a: { tagNum: number }, b: { tagNum: number }) => b.tagNum - a.tagNum)
 }
 
 </script>
@@ -98,10 +104,12 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
   display: flex;
   flex-direction: column;
 }
+
 .main-content .detail-table-box {
   height: 0;
   flex-grow: 1;
 }
+
 .options {
   display: flex;
   align-items: center;
@@ -119,25 +127,36 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
 }
 
 .custom_rare_info-box {
+  width: 100%;
   display: flex;
+  align-content: center;
   flex-wrap: wrap;
-  margin-top: 30px;
+  margin-top: 8px;
 }
+
 .custom_rare_info-box div {
   background-color: rgb(226, 215, 232);
   padding: 10px 20px;
   margin: 2px 12px;
   border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
 .custom_rare_info-box div span {
   display: inline-block;
   width: 100%;
   text-align: center;
+  white-space: nowrap;
+  min-width: 100px;
 }
+
 .custom_rare_info-box div span:first-child {
   color: #333;
   font-size: 16px;
 }
+
 .custom_rare_info-box div span:last-child {
   color: rgb(46, 138, 165);
   font-size: 16px;
