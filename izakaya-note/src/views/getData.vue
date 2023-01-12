@@ -3,7 +3,7 @@
     <div v-for="(tab, index) in tabs" :key="tab.url" class="tab" :class="{active: tabIndex === index}" @click="switchTab(tab, index)">{{ tab.name }}</div>
   </div>
 
-  <div v-if="false" class="get-xlsx">
+  <div v-if="true" class="get-xlsx">
     <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="readXlsx">
     <span>选择文件名(选择和excel文件名称语义相近的): </span>
     <el-select v-model="fileName">
@@ -70,11 +70,11 @@ const readerData = function(rawFile: Blob) {
 const generateData = function({ header, results }: any) {
   excelData.header = header
   excelData.results = results
-  // getExcelDataFile(JSON.parse(decodeURIComponent(window.atob(excelData))))
+  console.log(excelData)
   if (!fileName.value) {
     ElMessage({type: 'warning',message: '请先选择文件名' })
   } else {
-    getExcelDataFile(JSON.stringify({ excelData, fileName: fileName.value }))
+    // getExcelDataFile(JSON.stringify({ excelData, fileName: fileName.value }))
   }
 }
 

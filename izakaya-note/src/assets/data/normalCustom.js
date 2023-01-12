@@ -13,14 +13,14 @@ export const zones = [
     "爱丽丝奖励符卡召唤",
 ]
 
-export const normal_custom_header = [
+export const header = [
     "名称",
     "喜好·料理",
     "喜好·酒水",
     "出没地点"
 ]
 
-export const normal_custom_results = [
+export const results = [
     {
         "名称": "妖怪兔",
         "喜好·料理": "招牌、家常、甜、咸、鲜、果味、凉爽、力量涌现、流行·喜爱",

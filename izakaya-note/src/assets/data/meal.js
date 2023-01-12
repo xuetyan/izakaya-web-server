@@ -1,4 +1,4 @@
-export const meal_header = [
+export const header = [
     "名称",
     "厨具",
     "价格/円",
@@ -11,7 +11,7 @@ export const meal_header = [
     "获取方式"
 ]
 
-export const meal_results = [
+export const results = [
     {
         "名称": "饭团",
         "厨具": "料理台",

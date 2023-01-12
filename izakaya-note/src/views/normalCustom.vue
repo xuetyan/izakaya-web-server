@@ -45,8 +45,8 @@
   import { ref, reactive  } from 'vue'
 
   import type { TableDataInterface_normalCostom } from '@/interface/menu.ts'
-  import { zones, normal_custom_header, normal_custom_results } from '@/assets/data/normalCustom.js'
-  import { meal_header, meal_results } from '@/assets/data/meal.js'
+  import { zones, header as normal_custom_header, results as normal_custom_results } from '@/assets/data/normalCustom.js'
+  import { header as meal_header, results as meal_results } from '@/assets/data/meal.js'
 
   // 选择的地点
   const zoneName = ref('')
