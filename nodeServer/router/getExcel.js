@@ -1,12 +1,12 @@
 const fs = require('fs')
 
 const getExcel = async(ctx, next) => {
-    ctx.response.body = 'success'
     writeStr = `export const header = JSON.parse('${JSON.stringify(ctx.request.body.excelData.header)}')
-export const results = JSON.parse('${JSON.stringify(ctx.request.body.excelData.results)}')
+    export const results = JSON.parse('${JSON.stringify(ctx.request.body.excelData.results)}')
     `
-
-    fs.writeFileSync(`../../izakaya-note/public/${ctx.request.body.filename||'test'}.js`, writeStr)
+    console.log(ctx.request.body.fileName)
+    fs.writeFileSync(`../izakaya-note/src/assets/data/${ctx.request.body.fileName||'test'}.js`, writeStr)
+    ctx.response.body = 'success'
 }
 
 const userRoutes = [{
