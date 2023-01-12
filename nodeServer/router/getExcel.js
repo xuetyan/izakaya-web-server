@@ -6,7 +6,7 @@ const getExcel = async(ctx, next) => {
 export const results = JSON.parse('${JSON.stringify(ctx.request.body.excelData.results)}')
     `
 
-    fs.writeFileSync(`../../izakaya-note/src/assets/updateData/${ctx.request.body.filename||'test'}.js`, writeStr)
+    fs.writeFileSync(`../../izakaya-note/public/${ctx.request.body.filename||'test'}.js`, writeStr)
 }
 
 const userRoutes = [{
