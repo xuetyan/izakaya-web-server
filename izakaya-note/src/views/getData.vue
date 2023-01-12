@@ -27,7 +27,7 @@ import { getExcelDataFile } from '@/api/excel.js'
 
 const router = useRouter()
 
-const tabs: Array<typeof routeTab> = [{name: '稀客', url: '/rare_custom'}, {name: '普客', url: '/normal_custom'}]
+const tabs: Array<typeof routeTab> = [{name: '稀客', url: '/rare_custom'}, {name: '普客', url: '/normal_custom'}, {name: '酒水', url: '/beverages'}]
 let tabIndex = ref(0)
 let fileName = ref('')
 const switchTab = function(tab: typeof routeTab, index: number) {
