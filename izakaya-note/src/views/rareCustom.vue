@@ -89,10 +89,11 @@ const selectRareCustom = (val: string) => {
 const selectTags = (num: number | string) => {
   if (typeof num === 'number') {
     allTableData.sort((a: { [x: string]: number }, b: { [x: string]: number }) => b.price - a.price)
+    tableData =  allTableData.filter(f => f.tagNum === num)
   } else {
     allTableData.sort((a: { tagNum: number }, b: { tagNum: number }) => b.tagNum - a.tagNum)
+    tableData =  allTableData
   }
-  tableData = rareName.value !== '' ? allTableData.filter(f => f.tagNum === num) : allTableData
 }
 
 // 正特性
