@@ -6,7 +6,18 @@
           <div class="label">{{ '稀客' + customRareHeader[0] }} {{ '(可搜索)' }}</div>
           <el-select v-model="rareName" filterable clearable placeholder="选择稀客" size="large" @change="selectRareCustom">
             <el-option
-              v-for="item in rareList[customRareHeader[0]]||[]"
+              v-for="item in rareList['名称']||[]"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </div>
+        <div class="select-box">
+          <div class="label">满足tag数(方便价格排序)</div>
+          <el-select v-model="satisfiedTagsNum" filterable clearable placeholder="选择" size="large" @change="selectTags">
+            <el-option
+              v-for="item in 5"
               :key="item"
               :label="item"
               :value="item"
@@ -29,8 +40,8 @@
         <el-table-column label="价格" prop="price" sortable></el-table-column>
         <el-table-column label="tag数(喜爱tag - 厌恶tag)" prop="tagNum" sortable></el-table-column>
         <el-table-column label="喜爱tag" prop="like"></el-table-column>
-        <el-table-column label="厌恶tag" prop="hate"></el-table-column>
         <el-table-column label="可额外添加tag" prop="extra"></el-table-column>
+        <el-table-column label="厌恶tag" prop="hate"></el-table-column>
         <el-table-column label="食材" prop="material"></el-table-column>
         <el-table-column label="厨具" prop="cookware"></el-table-column>
       </el-table>
@@ -47,6 +58,9 @@ import { header as meal_header, results as meal_results } from '@/assets/data/me
 
 // 选择的稀客
 const rareName = ref('')
+const satisfiedTagsNum = ref('')
+
+let allTableData = reactive<typeof TableDataInterface_rareCostom[]>([])
 let tableData = reactive<typeof TableDataInterface_rareCostom[]>([])
 let customRareInfo = reactive<{[x: string]: string}>({})
 // 稀客 喜爱的料理 tag
@@ -57,10 +71,8 @@ const customRareHeader = reactive(custom_rare_header)
 const customRareResults = reactive(custom_rare_results)
 
 // 稀客列表
-const rareList: { [ x: string ]: any } = reactive({})
-for (const head of customRareHeader) {
-  rareList[head] = customRareResults.map((m: { [x: string]: any }) => m[head])
-}
+const rareList: { [x: string]: any } = reactive({})
+rareList['名称'] = customRareResults.map((m: { [x: string]: any }) => m['名称'])
 
 const selectRareCustom = (val: string) => {
   customRareInfo = customRareResults.find((f: { [x: string]: any }) => f[customRareHeader[0]] === val) ?? {}
@@ -69,9 +81,18 @@ const selectRareCustom = (val: string) => {
   getMeals(customRareInfo_like, customRareInfo_hate)
 }
 
+const selectTags = (num: number | string) => {
+  if (typeof num === 'number') {
+    allTableData.sort((a: { [x: string]: number }, b: { [x: string]: number }) => b.price - a.price)
+  } else {
+    allTableData.sort((a: { tagNum: number }, b: { tagNum: number }) => b.tagNum - a.tagNum)
+  }
+  tableData = rareName.value !== '' ? allTableData.filter(f => f.tagNum === num) : allTableData
+}
+
 // 正特性
-const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: string[]):void {
-  tableData = []
+const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: string[]): void {
+  allTableData = []
   for (const meal of meal_results) {
     const mealTags: string[] = meal['正特性'].split('、')
     const likeNum: number = customRareInfo_like.reduce((init: number, cur:string) => (init += (mealTags.includes(cur)? 1: 0)), 0)
@@ -91,10 +112,16 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
         cookware: meal['厨具'],
         price: meal['价格/円'],
       })
-      tableData.push(tableDataItem)
+      allTableData.push(tableDataItem)
     }
   }
-  tableData.sort((a: { tagNum: number }, b: { tagNum: number }) => b.tagNum - a.tagNum)
+
+  if (typeof satisfiedTagsNum.value === 'number') {
+    allTableData.sort((a: { [x: string]: number }, b: { [x: string]: number }) => b.price - a.price)
+  } else {
+    allTableData.sort((a: { tagNum: number }, b: { tagNum: number }) => b.tagNum - a.tagNum)
+  }
+  tableData = typeof satisfiedTagsNum.value === 'number' ? allTableData.filter(f => f.tagNum === satisfiedTagsNum.value) : allTableData
 }
 
 </script>
