@@ -75,6 +75,11 @@ const rareList: { [x: string]: any } = reactive({})
 rareList['名称'] = customRareResults.map((m: { [x: string]: any }) => m['名称'])
 
 const selectRareCustom = (val: string) => {
+  if(val === '') {
+    allTableData = []
+    tableData = []
+    return
+  }
   customRareInfo = customRareResults.find((f: { [x: string]: any }) => f[customRareHeader[0]] === val) ?? {}
   customRareInfo_like = customRareInfo[customRareHeader[2]].split('、')
   customRareInfo_hate = customRareInfo[customRareHeader[4]].split('、')
