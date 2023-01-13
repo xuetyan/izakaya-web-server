@@ -14,8 +14,8 @@
           </el-select>
         </div>
       </div>
-  
-      <div class="normal-custom-box">
+
+      <div class="custom-box">
         <div class="custom-info" v-for="custom in currentZoneCustom" :key="custom">
           <span class="custom-name">{{ custom }}</span>
           <span class="custom-tags">{{ getCustomTags(custom) }}</span>
@@ -108,63 +108,5 @@
   </script>
 
   <style scoped>
-  .main-content {
-    height: calc(100% - 80px);
-    display: flex;
-    flex-direction: column;
-  }
-  .main-content .detail-table-box {
-    height: 0;
-    flex-grow: 1;
-  }
-
-  .options {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 20px;
-  }
-
-  .select-box .label {
-    margin-bottom: 6px;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: rgb(230, 110, 134);
-  }
-
-  .normal-custom-box {
-    width: 100%;
-    display: flex;
-    align-content: center;
-    flex-wrap: wrap;
-    margin-top: 8px;
-  }
-
-  .normal-custom-box .custom-info {
-    background-color: rgb(226, 215, 232);
-    padding: 10px 20px;
-    margin: 2px 12px;
-    border-radius: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .normal-custom-box .custom-info span {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    white-space: nowrap;
-  }
-
-  .normal-custom-box .custom-info span:first-child {
-  color: #333;
-  font-size: 18px;
-}
-.normal-custom-box .custom-info span:last-child {
-  color: rgb(46, 138, 165);
-  font-size: 16px;
-}
+    @import url('../assets/style/searchTable.css');
   </style>

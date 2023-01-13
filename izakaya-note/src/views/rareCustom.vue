@@ -14,7 +14,8 @@
           </el-select>
         </div>
       </div>
-      <div class="custom_rare_info-box">
+
+      <div class="custom-box">
         <div v-for="(item, index) in Object.keys(customRareInfo)" :key="index">
           <span>{{ item }}</span>
           <span>{{ customRareInfo[item] }}</span>
@@ -99,66 +100,9 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
 </script>
 
 <style scoped>
-.main-content {
-  height: calc(100% - 80px);
-  display: flex;
-  flex-direction: column;
-}
+ @import url('../assets/style/searchTable.css');
 
-.main-content .detail-table-box {
-  height: 0;
-  flex-grow: 1;
-}
-
-.options {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 20px;
-}
-
-.select-box .label {
-  margin-bottom: 6px;
-  width: 100%;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: rgb(230, 110, 134);
-}
-
-.custom_rare_info-box {
-  width: 100%;
-  display: flex;
-  align-content: center;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.custom_rare_info-box div {
-  background-color: rgb(226, 215, 232);
-  padding: 10px 20px;
-  margin: 2px 12px;
-  border-radius: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.custom_rare_info-box div span {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  white-space: nowrap;
+.custom-box > div > span {
   min-width: 100px;
-}
-
-.custom_rare_info-box div span:first-child {
-  color: #333;
-  font-size: 16px;
-}
-
-.custom_rare_info-box div span:last-child {
-  color: rgb(46, 138, 165);
-  font-size: 16px;
 }
 </style>
