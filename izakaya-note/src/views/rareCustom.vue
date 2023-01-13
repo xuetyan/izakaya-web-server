@@ -28,9 +28,9 @@
         <el-table-column label="菜名" prop="mealName"></el-table-column>
         <el-table-column label="价格" prop="price" sortable></el-table-column>
         <el-table-column label="tag数(喜爱tag - 厌恶tag)" prop="tagNum" sortable></el-table-column>
-        <el-table-column label="喜爱tag" prop="like" sortable></el-table-column>
-        <el-table-column label="厌恶tag" prop="hate" sortable></el-table-column>
-        <el-table-column label="可额外添加tag" prop="extra" sortable></el-table-column>
+        <el-table-column label="喜爱tag" prop="like"></el-table-column>
+        <el-table-column label="厌恶tag" prop="hate"></el-table-column>
+        <el-table-column label="可额外添加tag" prop="extra"></el-table-column>
         <el-table-column label="食材" prop="material"></el-table-column>
         <el-table-column label="厨具" prop="cookware"></el-table-column>
       </el-table>

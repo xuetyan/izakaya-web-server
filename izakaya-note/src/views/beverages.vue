@@ -1,18 +1,25 @@
 <template>
+  <div class="main-content">
     <div>
-        <el-select v-model="beveragesTag" @change="selectTag">
+      <div class="options">
+        <div class="select-box">
+          <div class="label">酒水tag(可搜索)</div>
+          <el-select v-model="beveragesTag" filterable clearable @change="selectTag">
             <el-option v-for="tag in beveragesTags" :value="tag" :label="tag" :key="tag"></el-option>
-        </el-select>
-    
-        <div class="detail-table-box">
-          <el-table :data="tableData" stripe fit highlight-current-row height="100%">
-                <el-table-column label="酒水名" prop="name"></el-table-column>
-                <el-table-column label="价格" prop="price"></el-table-column>
-                <el-table-column label="tag" prop="tags"></el-table-column>
-                <el-table-column label="来源" prop="from"></el-table-column>
-          </el-table>
+          </el-select>
         </div>
+      </div>
     </div>
+
+    <div class="detail-table-box">
+      <el-table :data="tableData" stripe fit highlight-current-row height="100%">
+        <el-table-column label="酒水名" prop="name"></el-table-column>
+        <el-table-column label="价格(默认排序)" prop="price"></el-table-column>
+        <el-table-column label="tag" prop="tags"></el-table-column>
+        <el-table-column label="来源" prop="from"></el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -45,5 +52,5 @@ const selectTag = (tag: string) => {
 </script>
 
 <style scoped>
-
+ @import url('../assets/style/searchTable.css');
 </style>
