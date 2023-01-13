@@ -75,7 +75,7 @@ const rareList: { [x: string]: any } = reactive({})
 rareList['名称'] = customRareResults.map((m: { [x: string]: any }) => m['名称'])
 
 const selectRareCustom = (val: string) => {
-  if(val === '') {
+  if(!val) {
     allTableData = []
     tableData = []
     return
