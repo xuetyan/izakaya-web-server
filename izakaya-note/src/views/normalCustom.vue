@@ -45,7 +45,7 @@
   import { ref, reactive  } from 'vue'
 
   import type { TableDataInterface_normalCostom } from '@/interface/menu.ts'
-  import { zones, header as normal_custom_header, results as normal_custom_results } from '@/assets/data/normalCustom.js'
+  import { header as normal_custom_header, results as normal_custom_results } from '@/assets/data/normalCustom.js'
   import { header as meal_header, results as meal_results } from '@/assets/data/meal.js'
 
   // 选择的地点
@@ -55,7 +55,20 @@
   let currentZoneCustom = reactive<string[]>([])
 
   // 地点列表
-  const zoneList = reactive(zones)
+  const zoneList = reactive([
+    "妖怪兽道",
+    "人间之里",
+    "博丽神社",
+    "红魔馆",
+    "迷途竹林",
+    "魔法森林",
+    "妖怪之山",
+    "旧地狱",
+    "地灵殿",
+    "命莲寺",
+    "神灵庙",
+    "爱丽丝奖励符卡召唤"
+  ])
   // 普客列表
   const normalCustomHeader = reactive<string[]>(normal_custom_header)
   const normalCustomResults = reactive(normal_custom_results)
