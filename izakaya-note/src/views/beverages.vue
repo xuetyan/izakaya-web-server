@@ -4,11 +4,13 @@
       <div class="options">
         <div class="select-box">
           <div class="label">酒水tag(可搜索)</div>
-          <el-select v-model="beveragesTag" filterable clearable @change="selectTag">
+          <el-select v-model="beveragesTag" filterable clearable size="large" @change="selectTag">
             <el-option v-for="tag in beveragesTags" :value="tag" :label="tag" :key="tag"></el-option>
           </el-select>
         </div>
       </div>
+
+      <div class="custom-box"></div>
     </div>
 
     <div class="detail-table-box">

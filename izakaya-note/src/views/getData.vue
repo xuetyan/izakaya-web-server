@@ -1,31 +1,44 @@
 <template>
-  <div class="tabs">
-    <div v-for="(tab, index) in tabs" :key="tab.url" class="tab" :class="{active: tabIndex === index}" @click="switchTab(tab, index)">{{ tab.name }}</div>
-  </div>
+  <div class="background" :style="{backgroundImage: `url(${backgroundImage})`}"></div>
+  <!-- <UploadImage class="upload-bg"></UploadImage> -->
+  <div class="main-contain">
+    <div class="tabs">
+      <div v-for="(tab, index) in tabs" :key="tab.url" class="tab" :class="{active: tabIndex === index}" @click="switchTab(tab, index)">{{ tab.name }}</div>
+    </div>
 
-  <div v-if="false" class="get-xlsx">
-    <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="readXlsx">
-    <span>选择文件名(选择和excel文件名称语义相近的): </span>
-    <el-select v-model="fileName">
-      <el-option value="meal">菜单</el-option>
-      <el-option value="normalCustom">普客</el-option>
-      <el-option value="rareCustom">稀客</el-option>
-      <el-option value="beverages">酒水</el-option>
-    </el-select>
-  </div>
+    <div v-if="false" class="get-xlsx">
+      <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="readXlsx">
+      <span>选择文件名(选择和excel文件名称语义相近的): </span>
+      <el-select v-model="fileName">
+        <el-option value="meal">菜单</el-option>
+        <el-option value="normalCustom">普客</el-option>
+        <el-option value="rareCustom">稀客</el-option>
+        <el-option value="beverages">酒水</el-option>
+      </el-select>
+    </div>
 
-  <RouterView />
+    <RouterView />
+  </div>
 </template>
 
 <script lang="ts" setup name="Menu">
-import { ref, reactive  } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import { ElMessage } from 'element-plus'
+// import UploadImage from '@/components/uploadBgImage.vue'
 import type { routeTab } from '@/interface/menu.ts'
 import { getExcelDataFile } from '@/api/excel.js'
 
 const router = useRouter()
+
+const backgroundImages = Object.values(import.meta.glob('../../public/bg/*'))
+
+let backgroundImage = ref('')
+
+backgroundImages[0]().then((data: any) => {
+  backgroundImage.value = data.default
+})
 
 const tabs: Array<typeof routeTab> = [{name: '稀客', url: '/rare_custom'}, {name: '普客', url: '/normal_custom'}, {name: '酒水', url: '/beverages'}]
 let tabIndex = ref(0)
@@ -98,6 +111,31 @@ const getHeaderRow = function(sheet: any) {
 </script>
 
 <style scoped>
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: center/contain no-repeat;
+}
+
+.upload-bg {
+  position: fixed;
+  top: 68px;
+  right: 50px;
+  z-index: 2;
+}
+
+.main-contain {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  opacity: 0.89;
+  padding-top: 12px;
+}
+
 .tabs {
   background-color: rgb(217, 217, 238);
   padding: 10px 16px;
@@ -105,7 +143,7 @@ const getHeaderRow = function(sheet: any) {
   align-items: center;
   border-radius: 50px;
   line-height: 44px;
-  margin: 12px 0 6px;
+  margin: 0 0 6px;
 }
 
 .tab {
