@@ -33,14 +33,6 @@ import { getExcelDataFile } from '@/api/excel.js'
 
 const router = useRouter()
 
-const backgroundImages = Object.values(import.meta.glob('../../public/bg/*'))
-
-let backgroundImage = ref('')
-
-backgroundImages[0]().then((data: any) => {
-  backgroundImage.value = data.default
-})
-
 const tabs: Array<routeTab> = [
   {name: '稀客', url: '/rare_custom'},
   {name: '普客', url: '/normal_custom'},
