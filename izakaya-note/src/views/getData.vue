@@ -14,6 +14,7 @@
         <el-option value="normalCustom">普客</el-option>
         <el-option value="rareCustom">稀客</el-option>
         <el-option value="beverages">酒水</el-option>
+        <el-option value="tags">tags</el-option>
       </el-select>
     </div>
 

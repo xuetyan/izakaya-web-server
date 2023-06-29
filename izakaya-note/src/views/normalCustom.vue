@@ -3,7 +3,7 @@
     <div>
       <div class="options">
         <div class="select-box">
-          <div class="label">{{ '出没地点' }} {{ '(可搜索)' }}</div>
+          <div class="label">出没地点 (可搜索)</div>
           <el-select v-model="zoneName" filterable clearable placeholder="选择地点" size="large" @change="selectZone">
             <el-option
               v-for="zone in zoneList"

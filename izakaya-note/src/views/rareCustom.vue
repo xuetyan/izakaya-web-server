@@ -3,7 +3,7 @@
     <div>
       <div class="options">
         <div class="select-box">
-          <div class="label">{{ '稀客' + customRareHeader[0] }} {{ '(可搜索)' }}</div>
+          <div class="label">{{ '稀客' + customRareHeader[0] }} (可搜索)</div>
           <el-select v-model="rareName" filterable clearable placeholder="选择稀客" size="large" @change="selectRareCustom">
             <el-option
               v-for="item in rareList['名称']||[]"
@@ -14,8 +14,20 @@
           </el-select>
         </div>
         <div class="select-box">
-          <div class="label">满足tag数(方便价格排序)</div>
-          <el-select v-model="satisfiedTagsNum" filterable clearable placeholder="选择" size="large" @change="selectTags">
+          <div class="label">包含选中tag的料理 (可搜索)</div>
+          <el-select v-model="selectedTags" filterable clearable multiple collapse-tags collapse-tags-tooltip placeholder="选择tag" size="large" @change="selectTags">
+            <el-option
+            v-for="item in all_tags"
+            :key="item"
+            :label="item"
+            :value="item"
+            />
+          </el-select>
+          <el-button :type="selectedTags_mode ? 'warning' : 'success'" size="large" @click="toggleSelectedTagsMode">{{ selectedTags_mode ? '我全都要' : '一个就好' }}</el-button>
+        </div>
+        <div class="select-box">
+          <div class="label">满足tag数 (方便价格排序)</div>
+          <el-select v-model="satisfiedTagsNum" filterable clearable placeholder="选择" size="large" @change="selectTagsCount">
             <el-option
               v-for="item in 5"
               :key="item"
@@ -50,15 +62,23 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive  } from 'vue'
+import { ref, reactive, computed  } from 'vue'
 
 import type { TableDataInterface_rareCostom } from '@/interface/menu'
 import { header as custom_rare_header, results as custom_rare_results } from '@/assets/data/rareCustom.js'
 import { header as meal_header, results as meal_results } from '@/assets/data/meal.js'
+import { header as tags_header } from '@/assets/data/tags.js'
 
 // 选择的稀客
 const rareName = ref('')
-const satisfiedTagsNum = ref(0)
+const satisfiedTagsNum = ref<number|string>('')
+const selectedTags = ref<string[]>([])
+// false 或   true 且
+const selectedTags_mode = ref<boolean>(false)
+
+const all_tags = computed(() => {
+  return tags_header.slice(2)
+})
 
 let allTableData = reactive<TableDataInterface_rareCostom[]>([])
 let tableData = reactive<TableDataInterface_rareCostom[]>([])
@@ -86,7 +106,26 @@ const selectRareCustom = (val: string) => {
   getMeals(customRareInfo_like, customRareInfo_hate)
 }
 
-const selectTags = (num: number | string) => {
+const selectTags = () => {
+  if (selectedTags.value.length > 0) {
+    tableData = allTableData.filter((f: {[x: string]: any}) => {
+      if (selectedTags_mode.value) {
+        return selectedTags.value.every((e: string) => f.tags.includes(e))
+      } else {
+        return selectedTags.value.some((s: string) => f.tags.includes(s))
+      }
+    })
+  } else {
+    tableData = allTableData
+  }
+}
+
+const toggleSelectedTagsMode = () => {
+  selectedTags_mode.value = !selectedTags_mode.value
+  selectTags()
+}
+
+const selectTagsCount = (num: number | string) => {
   if (typeof num === 'number') {
     allTableData.sort((a: { [x: string]: number }, b: { [x: string]: number }) => b.price - a.price)
     tableData = allTableData.filter(f => f.tagNum === num)
@@ -106,7 +145,7 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
       const hateNum: number = customRareInfo_hate.reduce((init: number, cur:string) => (init += (mealTags.includes(cur) ? 1: 0)), 0)
       // 可额外添加的喜爱的tag
       let extra = reactive<string[]>([])
-      extra = customRareInfo_like.filter(f => (!mealTags.includes(f) && !(meal['反特性']?.split('、')??[]).includes(f)))
+      extra = customRareInfo_like.filter(f => (!mealTags.includes(f) && !(meal['反特性']?.split('、') ?? []).includes(f)))
 
       let tableDataItem = reactive<TableDataInterface_rareCostom>({
         mealName: meal['名称'],
@@ -117,17 +156,15 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
         material: meal['食材'],
         cookware: meal['厨具'],
         price: meal['价格/円'],
+        tags: mealTags
       })
       allTableData.push(tableDataItem)
     }
   }
 
-  if (typeof satisfiedTagsNum.value === 'number') {
-    allTableData.sort((a: { [x: string]: number }, b: { [x: string]: number }) => b.price - a.price)
-  } else {
-    allTableData.sort((a: { tagNum: number }, b: { tagNum: number }) => b.tagNum - a.tagNum)
-  }
-  tableData = typeof satisfiedTagsNum.value === 'number' ? allTableData.filter(f => f.tagNum === satisfiedTagsNum.value) : allTableData
+  selectTagsCount(satisfiedTagsNum.value)
+
+  selectTags()
 }
 
 </script>

@@ -3,7 +3,7 @@
     <div>
       <div class="options">
         <div class="select-box">
-          <div class="label">酒水tag(可搜索)</div>
+          <div class="label">酒水tag (可搜索)</div>
           <el-select v-model="beveragesTag" filterable clearable size="large" @change="selectTag">
             <el-option v-for="tag in beveragesTags" :value="tag" :label="tag" :key="tag"></el-option>
           </el-select>
