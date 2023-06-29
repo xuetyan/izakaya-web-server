@@ -52,16 +52,16 @@
 <script lang="ts" setup>
 import { ref, reactive  } from 'vue'
 
-import type { TableDataInterface_rareCostom } from '@/interface/menu.ts'
+import type { TableDataInterface_rareCostom } from '@/interface/menu'
 import { header as custom_rare_header, results as custom_rare_results } from '@/assets/data/rareCustom.js'
 import { header as meal_header, results as meal_results } from '@/assets/data/meal.js'
 
 // 选择的稀客
 const rareName = ref('')
-const satisfiedTagsNum = ref('')
+const satisfiedTagsNum = ref(0)
 
-let allTableData = reactive<typeof TableDataInterface_rareCostom[]>([])
-let tableData = reactive<typeof TableDataInterface_rareCostom[]>([])
+let allTableData = reactive<TableDataInterface_rareCostom[]>([])
+let tableData = reactive<TableDataInterface_rareCostom[]>([])
 let customRareInfo = reactive<{[x: string]: string}>({})
 // 稀客 喜爱的料理 tag
 let customRareInfo_like = reactive<string[]>([])
@@ -89,10 +89,10 @@ const selectRareCustom = (val: string) => {
 const selectTags = (num: number | string) => {
   if (typeof num === 'number') {
     allTableData.sort((a: { [x: string]: number }, b: { [x: string]: number }) => b.price - a.price)
-    tableData =  allTableData.filter(f => f.tagNum === num)
+    tableData = allTableData.filter(f => f.tagNum === num)
   } else {
     allTableData.sort((a: { tagNum: number }, b: { tagNum: number }) => b.tagNum - a.tagNum)
-    tableData =  allTableData
+    tableData = allTableData
   }
 }
 
@@ -108,7 +108,7 @@ const getMeals = function(customRareInfo_like: string[], customRareInfo_hate: st
       let extra = reactive<string[]>([])
       extra = customRareInfo_like.filter(f => (!mealTags.includes(f) && !(meal['反特性']?.split('、')??[]).includes(f)))
 
-      let tableDataItem = reactive<typeof TableDataInterface_rareCostom>({
+      let tableDataItem = reactive<TableDataInterface_rareCostom>({
         mealName: meal['名称'],
         tagNum: likeNum - hateNum,
         like: mealTags.filter(f => customRareInfo_like.includes(f)).join('、'),

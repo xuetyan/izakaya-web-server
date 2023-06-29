@@ -5,7 +5,8 @@
     hate: string,
     material: string,
     cookware: string,
-    price: string
+    price: string,
+    [propName: string]: any,
  }
 
  export interface TableDataInterface_normalCostom {
@@ -18,7 +19,7 @@
    tagCount: number[],
    [propName: string]: any,
  }
- 
+
  export interface routeTab {
     name: string,
     url: string

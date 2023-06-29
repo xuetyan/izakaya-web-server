@@ -1,5 +1,5 @@
 <template>
-  <div class="background" :style="{backgroundImage: `url(${backgroundImage})`}"></div>
+  <div class="background"></div>
   <!-- <UploadImage class="upload-bg"></UploadImage> -->
   <div class="main-contain">
     <div class="tabs">
@@ -27,7 +27,7 @@ import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import { ElMessage } from 'element-plus'
 // import UploadImage from '@/components/uploadBgImage.vue'
-import type { routeTab } from '@/interface/menu.ts'
+import type { routeTab } from '@/interface/menu'
 import { getExcelDataFile } from '@/api/excel.js'
 
 const router = useRouter()
@@ -40,10 +40,13 @@ backgroundImages[0]().then((data: any) => {
   backgroundImage.value = data.default
 })
 
-const tabs: Array<typeof routeTab> = [{name: '稀客', url: '/rare_custom'}, {name: '普客', url: '/normal_custom'}, {name: '酒水', url: '/beverages'}]
+const tabs: Array<routeTab> = [
+  {name: '稀客', url: '/rare_custom'},
+  {name: '普客', url: '/normal_custom'},
+  {name: '酒水', url: '/beverages'}]
 let tabIndex = ref(0)
 let fileName = ref('')
-const switchTab = function(tab: typeof routeTab, index: number) {
+const switchTab = function(tab: routeTab, index: number) {
   tabIndex.value = index
   router.push({ path: tab.url })
 }

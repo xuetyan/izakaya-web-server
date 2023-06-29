@@ -44,13 +44,13 @@
   <script lang="ts" setup>
   import { ref, reactive  } from 'vue'
 
-  import type { TableDataInterface_normalCostom } from '@/interface/menu.ts'
+  import type { TableDataInterface_normalCostom } from '@/interface/menu'
   import { header as normal_custom_header, results as normal_custom_results } from '@/assets/data/normalCustom.js'
   import { header as meal_header, results as meal_results } from '@/assets/data/meal.js'
 
   // 选择的地点
   const zoneName = ref('')
-  let tableData = reactive<typeof TableDataInterface_normalCostom[]>([])
+  let tableData = reactive<TableDataInterface_normalCostom[]>([])
   // 当前地点 普客列表
   let currentZoneCustom = reactive<string[]>([])
 
@@ -113,7 +113,7 @@
         stats['haveFour'] = tagCount.reduce((init: number, cur: number) => (init += (cur === 4 ? 1 : 0)), 0)
       }
       return {...temp, ...stats, tagCount }
-    }).sort((a: typeof TableDataInterface_normalCostom, b: typeof TableDataInterface_normalCostom) => b.haveTwo - a.haveTwo)
+    }).sort((a: TableDataInterface_normalCostom, b: TableDataInterface_normalCostom) => b.haveTwo - a.haveTwo)
     return TableData
   }
 
