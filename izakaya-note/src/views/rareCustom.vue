@@ -68,6 +68,7 @@ import type { TableDataInterface_rareCostom } from '@/interface/menu'
 import { header as custom_rare_header, results as custom_rare_results } from '@/assets/data/rareCustom.js'
 import { header as meal_header, results as meal_results } from '@/assets/data/meal.js'
 import { header as tags_header } from '@/assets/data/tags.js'
+import { tagsSet as allTags } from '@/assets/data/temp.js'
 
 // 选择的稀客
 const rareName = ref('')
@@ -76,8 +77,12 @@ const selectedTags = ref<string[]>([])
 // false 或   true 且
 const selectedTags_mode = ref<boolean>(false)
 
+// const all_tags = computed(() => {
+//   return tags_header.slice(2)
+// })
+
 const all_tags = computed(() => {
-  return tags_header.slice(2)
+  return allTags
 })
 
 let allTableData = reactive<TableDataInterface_rareCostom[]>([])

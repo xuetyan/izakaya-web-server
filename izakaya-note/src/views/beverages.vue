@@ -18,7 +18,7 @@
         <el-table-column label="酒水名" prop="name"></el-table-column>
         <el-table-column label="价格(默认排序)" prop="price"></el-table-column>
         <el-table-column label="tag" prop="tags"></el-table-column>
-        <el-table-column label="来源" prop="from"></el-table-column>
+        <!-- <el-table-column label="来源" prop="from"></el-table-column> -->
       </el-table>
     </div>
   </div>

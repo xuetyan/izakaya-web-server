@@ -27,7 +27,7 @@
       <el-table :data="tableData" stripe fit highlight-current-row height="100%">
         <el-table-column label="菜名" prop="mealName"></el-table-column>
         <el-table-column label="价格" prop="price" sortable></el-table-column>
-        <el-table-column label="满足4Tag(人数)" prop="haveFour" sortable></el-table-column>
+        <el-table-column label="满足>=4Tag(人数)" prop="haveFour" sortable></el-table-column>
         <el-table-column label="满足3Tag(人数)" prop="haveThree" sortable></el-table-column>
         <el-table-column label="满足2Tag(默认排序)" prop="haveTwo" sortable></el-table-column>
         <el-table-column label="满足1Tag(人数)" prop="haveOne" sortable></el-table-column>
@@ -37,11 +37,9 @@
       </el-table>
     </div>
   </div>
+</template>
 
-
-  </template>
-
-  <script lang="ts" setup>
+<script lang="ts" setup>
   import { ref, reactive  } from 'vue'
 
   import type { TableDataInterface_normalCostom } from '@/interface/menu'
@@ -53,25 +51,30 @@
   let tableData = reactive<TableDataInterface_normalCostom[]>([])
   // 当前地点 普客列表
   let currentZoneCustom = reactive<string[]>([])
-
-  // 地点列表
-  const zoneList = reactive([
-    "妖怪兽道",
-    "人间之里",
-    "博丽神社",
-    "红魔馆",
-    "迷途竹林",
-    "魔法森林",
-    "妖怪之山",
-    "旧地狱",
-    "地灵殿",
-    "命莲寺",
-    "神灵庙",
-    "爱丽丝奖励符卡召唤"
-  ])
   // 普客列表
   const normalCustomHeader = reactive<string[]>(normal_custom_header)
   const normalCustomResults = reactive(normal_custom_results)
+
+  // 地点列表
+  // const zoneList = reactive([
+  //   "妖怪兽道",
+  //   "人间之里",
+  //   "博丽神社",
+  //   "红魔馆",
+  //   "迷途竹林",
+  //   "魔法森林",
+  //   "妖怪之山",
+  //   "旧地狱",
+  //   "地灵殿",
+  //   "命莲寺",
+  //   "神灵庙",
+  //   "爱丽丝奖励符卡召唤"
+  // ])
+
+  const zoneList = [...new Set(normalCustomResults.reduce((init: string[], cur: { [x: string]: string }) => {
+    init = init.concat(cur['出没地点'].split('、'))
+    return init
+  }, []))]
 
   const selectZone = (val: string) => {
     currentZoneCustom = normalCustomResults.filter((f: { [x: string]: string }) => f['出没地点'].split('、').some(s => s=== val)).map((m: { [x: string]: string }) => m['名称'])
@@ -79,7 +82,7 @@
   }
 
   const getCustomTags = (customName: string) => {
-    const so = normalCustomResults.find(((f: { [x: string]: string }) => f['名称'] === customName))
+    const so = normalCustomResults.find((f: { [x: string]: string }) => f['名称'] === customName)
     return so ? so['喜好·料理'] : ''
   }
 
@@ -101,7 +104,7 @@
         price: meal['价格/円'],
       })
       const tagCount = reactive(customTagsList.map((tags: string[]) => {
-        return meal['正特性'].split('、').reduce((init: string, cur: string) => (init += tags.includes(cur) ? 1 : 0), 0)
+        return meal['正特性'].split('、').reduce((init: string, cur: string) => (init += (tags.includes(cur)||tags.includes('全部')) ? 1 : 0), 0)
       }))
       // 符合普客tag 统计
       let stats = reactive<{[x: string]: number}>({ })
@@ -110,16 +113,15 @@
         stats['haveOne'] = tagCount.reduce((init: number, cur: number) => (init += (cur === 1 ? 1 : 0)), 0)
         stats['haveTwo'] = tagCount.reduce((init: number, cur: number) => (init += (cur === 2 ? 1 : 0)), 0)
         stats['haveThree'] = tagCount.reduce((init: number, cur: number) => (init += (cur === 3 ? 1 : 0)), 0)
-        stats['haveFour'] = tagCount.reduce((init: number, cur: number) => (init += (cur === 4 ? 1 : 0)), 0)
+        stats['haveFour'] = tagCount.reduce((init: number, cur: number) => (init += (cur >= 4 ? 1 : 0)), 0)
       }
       return {...temp, ...stats, tagCount }
     }).sort((a: TableDataInterface_normalCostom, b: TableDataInterface_normalCostom) => b.haveTwo - a.haveTwo)
     return TableData
   }
 
-
   </script>
 
-  <style scoped>
-    @import url('../assets/style/searchTable.css');
-  </style>
+<style scoped>
+  @import url('../assets/style/searchTable.css');
+</style>
