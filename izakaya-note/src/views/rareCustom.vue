@@ -77,13 +77,13 @@ const selectedTags = ref<string[]>([])
 // false 或   true 且
 const selectedTags_mode = ref<boolean>(false)
 
-// const all_tags = computed(() => {
-//   return tags_header.slice(2)
-// })
-
 const all_tags = computed(() => {
-  return allTags
+  return tags_header.slice(2)
 })
+
+// const all_tags = computed(() => {
+//   return allTags
+// })
 
 let allTableData = reactive<TableDataInterface_rareCostom[]>([])
 let tableData = reactive<TableDataInterface_rareCostom[]>([])
